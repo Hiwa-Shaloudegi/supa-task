@@ -74,10 +74,8 @@ class AuthApiService {
     final GoogleSignIn googleSignIn = GoogleSignIn.instance;
 
     if (kIsWeb) {
-      // Web: Only use clientId, NO serverClientId
       await googleSignIn.initialize(clientId: webClientId);
     } else {
-      // Mobile: Use both clientId and serverClientId
       await googleSignIn.initialize(
         clientId: iosClientId,
         serverClientId: webClientId,
@@ -85,10 +83,8 @@ class AuthApiService {
     }
     try {
       if (kIsWeb) {
-        // Web: Use Supabase's OAuth flow
         return await _googleSignInWeb();
       } else {
-        // Mobile: Use native Google Sign-In
         return await _googleSignInMobile();
       }
     } on Exception catch (e) {
@@ -100,19 +96,20 @@ class AuthApiService {
     final response = await supabase.auth.signInWithOAuth(
       OAuthProvider.google,
       redirectTo:
-          kIsWeb ? null : 'io.supabase.flutterquickstart://login-callback/',
-      authScreenLaunchMode:
           kIsWeb
-              ? LaunchMode.platformDefault
-              : LaunchMode
-                  .externalApplication, // Launch the auth screen in a new webview on mobile.
+              ? 'http://localhost:7357/auth/callback'
+              : 'io.supabase.flutterquickstart://login-callback/',
+      authScreenLaunchMode: LaunchMode.externalApplication,
+      // kIsWeb
+      // ? LaunchMode.platformDefault
+      // : LaunchMode
+      //     .externalApplication, // Launch the auth screen in a new webview on mobile.
     );
 
     if (!response) {
       throw Exception('Google Sign-In was cancelled or failed');
     }
 
-    // Wait for auth state to change
     final authState = await supabase.auth.onAuthStateChange.firstWhere(
       (state) => state.session != null,
     );
@@ -124,13 +121,10 @@ class AuthApiService {
   }
 
   Future<AuthResponse> _googleSignInMobile() async {
-    // Get or create the GoogleSignIn instance
     final googleSignIn = GoogleSignIn.instance;
 
-    // Perform the sign in
     final googleAccount = await googleSignIn.authenticate();
 
-    // Get authorization for the required scopes
     final googleAuthorization = await googleAccount.authorizationClient
         .authorizationForScopes([]);
 
