@@ -3,10 +3,10 @@ name: Flutter - iOS Build Dev
 on:
   push:
     branches:
-      - main/ios
+      - dev/ios
   pull_request:
     branches:
-      - main/ios
+      - dev/ios
 
 jobs:
   build:
