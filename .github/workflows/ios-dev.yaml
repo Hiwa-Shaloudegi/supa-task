@@ -3,10 +3,10 @@ name: Flutter - iOS Build Dev
 on:
   push:
     branches:
-      - main
+      - main/ios
   pull_request:
     branches:
-      - main
+      - main/ios
 
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
 
       - name: Analyze Dart code
         run: flutter analyze --fatal-warnings
-        
+
       # - name: Run tests
       #   run: flutter test
 

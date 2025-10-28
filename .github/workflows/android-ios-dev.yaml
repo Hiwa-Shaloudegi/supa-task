@@ -1,16 +1,16 @@
-name: Flutter - Android Build Dev
+name: Flutter - Android-iOS Build Dev
 
 on:
   push:
     branches:
-      - main/android
+      - main
   pull_request:
     branches:
-      - main/android
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -48,3 +48,12 @@ jobs:
 
       - name: Build Android APK
         run: flutter build apk --debug --build-name=1.0.0 --build-number=1
+
+      - name: Install iOS dependencies
+       run: |
+        cd ios
+        pod install --repo-update
+        cd ..
+
+      - name: Build iOS IPA
+        run: flutter build ios --debug --build-name=1.0.0 --build-number=1 --no-codesign
