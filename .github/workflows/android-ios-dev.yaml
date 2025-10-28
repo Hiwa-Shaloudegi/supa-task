@@ -57,3 +57,15 @@ jobs:
 
       - name: Build iOS IPA
         run: flutter build ios --debug --build-name=1.0.0 --build-number=1 --no-codesign
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v5
+        with:
+          name: supatask-android-debug.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v5
+        with:
+          name: supatask-ios-debug.ipa
+          path: build/ios/iphoneos/Runner.app
