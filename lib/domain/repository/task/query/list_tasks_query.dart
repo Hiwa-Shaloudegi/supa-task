@@ -23,7 +23,6 @@ class ListTasksQuery extends _$ListTasksQuery {
 //   void setState(AsyncValue<T> asyncValue);
 // }
 
-
 // enum DataSourceType { remote, local }
 
 // class Meta<T> {
