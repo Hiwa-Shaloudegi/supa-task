@@ -3,10 +3,10 @@ name: Flutter - Android Build Dev
 on:
   push:
     branches:
-      - main/android
+      - dev-android
   pull_request:
     branches:
-      - main/android
+      - dev-android
 
 jobs:
   build:

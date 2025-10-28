@@ -9,10 +9,10 @@ on:
         default: 'dev'
         type: choice
         options:
-        - main
-        - dev
-        - qa
-        - release
+          - main
+          - dev
+          - qa
+          - release
       
       flutter-version:
         description: 'Select your flutter version'
