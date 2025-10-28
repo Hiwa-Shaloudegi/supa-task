@@ -1,4 +1,4 @@
-name: Flutter - Android Build Dev
+name: Flutter - iOS Build Dev
 
 on:
   push:
@@ -10,19 +10,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
       - name: Setup .env file (ENV)
         run: echo "${{secrets.ENV}}" >> .env
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'zulu'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -37,5 +31,11 @@ jobs:
       # - name: Run tests
       #   run: flutter test
 
-      - name: Build Android APK
-        run: flutter build apk --debug --build-name=1.0.0 --build-number=1
+      - name: Install iOS dependencies
+       run: |
+        cd ios
+        pod install --repo-update
+        cd ..
+
+      - name: Build iOS IPA
+        run: flutter build ios --debug --build-name=1.0.0 --build-number=1 --no-codesign
