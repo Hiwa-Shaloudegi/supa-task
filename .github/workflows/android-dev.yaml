@@ -46,5 +46,11 @@ jobs:
       # - name: Run tests
       #   run: flutter test
 
-      - name: Build Android APK
+      - name: Build Android artifact
         run: flutter build apk --debug --build-name=1.0.0 --build-number=1
+        
+      - name: Upload Android artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: supatask-android-debug.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk

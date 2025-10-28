@@ -29,6 +29,7 @@ jobs:
         with:
           channel: 'stable'
           flutter-version: '3.35.6'
+          cache: true
       - run: flutter --version
 
       - name: Install Flutter dependencies
@@ -46,26 +47,34 @@ jobs:
       # - name: Run tests
       #   run: flutter test
 
-      - name: Build Android APK
+      - name: Build Android app
         run: flutter build apk --debug --build-name=1.0.0 --build-number=1
 
       - name: Install iOS dependencies
-       run: |
-        cd ios
-        pod install --repo-update
-        cd ..
+        run: |
+          cd ios
+          pod install --repo-update
+          cd ..
 
-      - name: Build iOS IPA
+      - name: Build iOS app
         run: flutter build ios --debug --build-name=1.0.0 --build-number=1 --no-codesign
 
-      - name: Upload APK
+      - name: Package iOS .ipa
+        run: |
+          cd build/ios/iphoneos
+          mkdir -p Payload
+          cp -r Runner.app Payload/
+          zip -r supatask-ios-debug.ipa Payload
+          mv supatask-ios-debug.ipa ../../..
+
+      - name: Upload Android artifact
         uses: actions/upload-artifact@v5
         with:
           name: supatask-android-debug.apk
           path: build/app/outputs/flutter-apk/app-debug.apk
 
-      - name: Upload IPA
+      - name: Upload iOS artifact
         uses: actions/upload-artifact@v5
         with:
           name: supatask-ios-debug.ipa
-          path: build/ios/iphoneos/Runner.app
+          path: build/supatask-ios-debug.ipa
