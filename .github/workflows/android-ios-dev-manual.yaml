@@ -54,7 +54,7 @@ jobs:
         run: flutter pub get
 
       - name: Autoformat Dart files
-        run: flutter format .
+        run: dart format .
       
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
