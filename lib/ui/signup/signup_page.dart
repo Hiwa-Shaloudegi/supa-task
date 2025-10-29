@@ -85,8 +85,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
                       ShadInputFormField(
                         controller: _nameController,
-                        placeholder: const Text("John Doe"),
                         label: Text("Full Name"),
+                        textInputAction: TextInputAction.next,
+
+                        placeholder: const Text("John Doe"),
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'please enter your name';
@@ -126,9 +128,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                               orElse: () => const Text("Sign up"),
                             ),
                       ),
-                      const SizedBox(height: 16),
 
+                      const SizedBox(height: 16),
                       OAuthSection(),
+                      const SizedBox(height: 24),
 
                       Center(
                         child: Row(

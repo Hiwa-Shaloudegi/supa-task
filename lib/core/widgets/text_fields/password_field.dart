@@ -18,9 +18,11 @@ class ShadPasswordField extends StatelessWidget {
     return ShadInputFormField(
       id: 'password',
       controller: controller,
+      textInputAction: TextInputAction.done,
       label: Text('Password'),
       obscureText: !isPasswordVisible,
       placeholder: const Text("••••••", style: TextStyle(fontSize: 16)),
+      keyboardType: TextInputType.number,
       trailing: IconButton(
         padding: EdgeInsets.zero,
         iconSize: 18,

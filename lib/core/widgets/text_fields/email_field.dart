@@ -11,6 +11,7 @@ class ShadEmailField extends StatelessWidget {
     return ShadInputFormField(
       id: 'email',
       controller: controller,
+      textInputAction: TextInputAction.next,
       label: const Text("Email"),
       placeholder: const Text("you@example.com"),
       keyboardType: TextInputType.emailAddress,

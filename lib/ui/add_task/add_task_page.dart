@@ -76,6 +76,8 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
               children: [
                 ShadInputFormField(
                   controller: _titleController,
+                  autofocus: !isEditing,
+                  textInputAction: TextInputAction.next,
                   label: const Text('Title'),
                   placeholder: const Text('Enter task title'),
                   validator: (value) {
@@ -89,6 +91,8 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
 
                 ShadInputFormField(
                   controller: _descriptionController,
+                                    textInputAction: TextInputAction.done,
+
                   label: const Text('Description'),
                   placeholder: const Text('Enter task description'),
                   maxLines: 5,

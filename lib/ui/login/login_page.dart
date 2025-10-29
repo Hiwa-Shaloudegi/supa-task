@@ -80,6 +80,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                       ShadPasswordField(
                         controller: _passwordController,
+
                         isPasswordVisible: isPasswordVisible,
                         onToggleVisibility: () {
                           vm.togglePasswordVisibility();
