@@ -62,43 +62,20 @@ GoRouter router(Ref ref) {
       final isAuthenticated = user != null;
       final currentPath = state.matchedLocation;
 
-      final publicRoutes = ['/', '/login', '/signup'];
-      final isPublicRoute = publicRoutes.contains(currentPath);
-
-      if (isAuthenticated && isPublicRoute) {
-        return '/home';
+      if (currentPath == '/') {
+        return null;
       }
 
-      if (!isAuthenticated && !isPublicRoute) {
+      if (!isAuthenticated && currentPath.startsWith('/home')) {
         return '/login';
       }
 
+      if (isAuthenticated &&
+          (currentPath == '/login' || currentPath == '/signup')) {
+        return '/home';
+      }
+
       return null;
-
-      // final user = userValueNotifier.value;
-      // final isAuthenticated = user != null;
-
-      // final isGoingToLogin = state.name == AppRoutes.login;
-      // final isGoingToSignup = state.name == AppRoutes.signup;
-      // final isGoingToSplash = state.name == AppRoutes.splash;
-
-      // if (isAuthenticated) {
-      //   if (isGoingToLogin || isGoingToSignup || isGoingToSplash) {
-      //     return '/home';
-      //   }
-      //   return null; // Stay on current page
-      // }
-
-      // if (!isAuthenticated) {
-      //   if (state.name == AppRoutes.home) {
-      //     return '/login';
-      //   }
-      //   if (isGoingToLogin || isGoingToSignup || isGoingToSplash) {
-      //     return null;
-      //   }
-      // }
-
-      // return null;
     },
   );
 }
