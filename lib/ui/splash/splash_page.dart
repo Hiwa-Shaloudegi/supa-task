@@ -15,16 +15,25 @@ class SplashPage extends ConsumerStatefulWidget {
 class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 2), () {
-      final user = ref.read(userProvider);
-      if (!mounted) return;
-      if (user != null) {
-        context.go('/home');
-      } else {
-        context.go('/login');
-      }
-    });
     super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    try {
+      await Future.wait([
+        // Minimum splash duration
+        Future.delayed(const Duration(seconds: 2)),
+      ]);
+
+      if (!mounted) return;
+
+      final user = ref.read(userProvider);
+      context.go(user != null ? '/home' : '/login');
+    } catch (e) {
+      if (!mounted) return;
+      context.go('/login');
+    }
   }
 
   @override
