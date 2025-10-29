@@ -1,0 +1,56 @@
+name: Flutter - Android Build Dev
+
+on:
+  push:
+    branches:
+      - dev-android
+  pull_request:
+    branches:
+      - dev-android
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .env file (ENV)
+        run: echo "${{secrets.ENV}}" >> .env
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.35.6'
+      - run: flutter --version
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Autoformat Dart files
+        run: dart format .
+      
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze Dart code
+        run: flutter analyze --fatal-warnings
+
+      # - name: Run tests
+      #   run: flutter test
+
+      - name: Build Android artifact
+        run: flutter build apk --debug --build-name=1.0.0 --build-number=1
+        
+      - name: Upload Android artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: supatask-android-debug.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
