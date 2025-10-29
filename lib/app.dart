@@ -25,6 +25,9 @@ class App extends ConsumerWidget {
               const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
             ],
           ),
+      scrollBehavior: const ScrollBehavior().copyWith(
+        physics: const BouncingScrollPhysics(),
+      ),
       debugShowCheckedModeBanner: kDebugMode,
       title: 'SupaTask',
       theme: ShadThemeData(

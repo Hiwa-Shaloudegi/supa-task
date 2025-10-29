@@ -33,9 +33,9 @@ class OAuthSection extends ConsumerWidget {
             await ref.read(googleSigninCommandProvider.notifier).run();
           },
         ),
-        const SizedBox(height: 12),
 
         //TODO: add sign in with Apple
+        // const SizedBox(height: 12),
         //AppleAuthButton(),
       ],
     );
