@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:supa_task/core/widgets/buttons/logout_button.dart';
 import 'package:supa_task/core/widgets/drawer/drawer_item.dart';
 import 'package:supa_task/core/widgets/drawer/theme_swich.dart';
+import 'package:supa_task/core/widgets/logo_widget.dart';
 import 'package:supa_task/domain/repository/theme/notifiers/theme_mode_notifier.dart';
 import 'package:supa_task/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +27,7 @@ class AppDrawer extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.task_alt_rounded, size: 44),
+                  LogoWidget(),
                   const SizedBox(height: 12),
                   Text("Supa Task", style: theme.textTheme.h3),
                   const SizedBox(height: 4),

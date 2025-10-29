@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:supa_task/core/utils/extensions/async_value_ui.dart';
 import 'package:supa_task/core/widgets/loading/loading_widget.dart';
+import 'package:supa_task/core/widgets/logo_widget.dart';
 import 'package:supa_task/core/widgets/oauth_section.dart';
 import 'package:supa_task/core/widgets/text_fields/email_field.dart';
 import 'package:supa_task/core/widgets/text_fields/password_field.dart';
@@ -64,10 +65,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       Center(
                         child: Column(
                           children: [
-                            const Icon(
-                              Icons.person_add_alt_1_rounded,
-                              size: 48,
-                            ),
+                            LogoWidget(),
                             const SizedBox(height: 12),
                             Text(
                               "Create an account",

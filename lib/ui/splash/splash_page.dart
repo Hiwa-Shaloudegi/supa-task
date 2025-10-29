@@ -34,25 +34,34 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            // App title
-            Text(
-              'SupaTask',
-              style: theme.textTheme.h2.copyWith(
-                color: theme.colorScheme.foreground,
-                fontWeight: FontWeight.w600,
+            Align(
+              alignment: Alignment.center,
+
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/images/logo.png', scale: 2),
+                  Transform.translate(
+                    offset: const Offset(0, -46),
+
+                    child: Image.asset(
+                      'assets/images/logo_text.png',
+                      width: 200,
+                      height: 200,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
-
-            // Loading animation
-            SizedBox(
-              width: 200,
-              height: 200,
+            Positioned(
+              bottom: 44,
               child: Lottie.asset(
                 'assets/icons/loading_circle.json',
+                width: 120,
+                height: 120,
                 fit: BoxFit.contain,
                 repeat: true,
                 addRepaintBoundary: true,
