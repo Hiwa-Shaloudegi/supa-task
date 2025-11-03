@@ -67,6 +67,87 @@ class AuthApiService {
     }
   }
 
+  // Future<AuthResponse> googleSignIn() async {
+  //   final webClientId = dotenv.env['GOOGLE_WEB_CLIENT_ID'] ?? '';
+  //   final iosClientId = dotenv.env['GOOGLE_IOS_CLIENT_ID'] ?? '';
+
+  //   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+
+  //   if (kIsWeb) {
+  //     await googleSignIn.initialize(clientId: webClientId);
+  //   } else {
+  //     await googleSignIn.initialize(
+  //       clientId: iosClientId,
+  //       serverClientId: webClientId,
+  //     );
+  //   }
+  //   try {
+  //     if (kIsWeb) {
+  //       return await _googleSignInWeb();
+  //     } else {
+  //       return await _googleSignInMobile();
+  //     }
+  //   } on Exception catch (e) {
+  //     throw handleException(e);
+  //   }
+  // }
+
+  // Future<AuthResponse> _googleSignInWeb() async {
+  //   final response = await supabase.auth.signInWithOAuth(
+  //     OAuthProvider.google,
+  //     redirectTo:
+  //         kIsWeb
+  //             ? 'http://localhost:7357/auth/callback'
+  //             : 'io.supabase.flutterquickstart://login-callback/',
+  //     authScreenLaunchMode: LaunchMode.externalApplication,
+  //     // kIsWeb
+  //     // ? LaunchMode.platformDefault
+  //     // : LaunchMode
+  //     //     .externalApplication, // Launch the auth screen in a new webview on mobile.
+  //   );
+
+  //   if (!response) {
+  //     throw Exception('Google Sign-In was cancelled or failed');
+  //   }
+
+  //   final authState = await supabase.auth.onAuthStateChange.firstWhere(
+  //     (state) => state.session != null,
+  //   );
+
+  //   return AuthResponse(
+  //     session: authState.session,
+  //     user: authState.session?.user,
+  //   );
+  // }
+
+  // Future<AuthResponse> _googleSignInMobile() async {
+  //   final googleSignIn = GoogleSignIn.instance;
+
+  //   final googleAccount = await googleSignIn.authenticate();
+
+  //   final googleAuthorization = await googleAccount.authorizationClient
+  //       .authorizationForScopes([]);
+
+  //   final googleAuthentication = googleAccount.authentication;
+  //   final idToken = googleAuthentication.idToken;
+  //   final accessToken = googleAuthorization?.accessToken;
+
+  //   if (accessToken == null) {
+  //     throw Exception('No Access Token found.');
+  //   }
+  //   if (idToken == null) {
+  //     throw Exception('No ID Token found.');
+  //   }
+
+  //   return await supabase.auth.signInWithIdToken(
+  //     provider: OAuthProvider.google,
+  //     idToken: idToken,
+  //     accessToken: accessToken,
+  //   );
+  // }
+
+  ///////
+  //
   Future<AuthResponse> googleSignIn() async {
     final webClientId = dotenv.env['GOOGLE_WEB_CLIENT_ID'] ?? '';
     final iosClientId = dotenv.env['GOOGLE_IOS_CLIENT_ID'] ?? '';
@@ -95,15 +176,8 @@ class AuthApiService {
   Future<AuthResponse> _googleSignInWeb() async {
     final response = await supabase.auth.signInWithOAuth(
       OAuthProvider.google,
-      redirectTo:
-          kIsWeb
-              ? 'http://localhost:7357/auth/callback'
-              : 'io.supabase.flutterquickstart://login-callback/',
-      authScreenLaunchMode: LaunchMode.externalApplication,
-      // kIsWeb
-      // ? LaunchMode.platformDefault
-      // : LaunchMode
-      //     .externalApplication, // Launch the auth screen in a new webview on mobile.
+      redirectTo: 'http://localhost:7357/auth/callback',
+      authScreenLaunchMode: LaunchMode.platformDefault,
     );
 
     if (!response) {
@@ -123,26 +197,20 @@ class AuthApiService {
   Future<AuthResponse> _googleSignInMobile() async {
     final googleSignIn = GoogleSignIn.instance;
 
-    final googleAccount = await googleSignIn.authenticate();
+    final googleUser = await googleSignIn.authenticate();
 
-    final googleAuthorization = await googleAccount.authorizationClient
-        .authorizationForScopes([]);
+    final googleAuth = googleUser.authentication;
+    final idToken = googleAuth.idToken;
 
-    final googleAuthentication = googleAccount.authentication;
-    final idToken = googleAuthentication.idToken;
-    final accessToken = googleAuthorization?.accessToken;
-
-    if (accessToken == null) {
-      throw Exception('No Access Token found.');
-    }
     if (idToken == null) {
       throw Exception('No ID Token found.');
     }
 
+    // For google_sign_in 7.x, use idToken for both parameters
     return await supabase.auth.signInWithIdToken(
       provider: OAuthProvider.google,
       idToken: idToken,
-      accessToken: accessToken,
+      accessToken: idToken, // Use idToken here too
     );
   }
 }
