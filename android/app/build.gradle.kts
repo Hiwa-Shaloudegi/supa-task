@@ -20,21 +20,37 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "dev.hiwa.supa_task"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 29
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        // ✅ Release signing config (reads values from environment variables)
+        create("release") {
+            val keystoreFile = file("release-key.jks")
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            } else {
+                println("⚠️ Warning: release-key.jks not found, using debug signing instead.")
+            }
+        }
+    }
+
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+        getByName("release") {
+            // Use release signing if available, otherwise fallback to debug
+            signingConfig = signingConfigs.findByName("release")
+                ?: signingConfigs.getByName("debug")
+
+            // Adjust these as needed
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 }

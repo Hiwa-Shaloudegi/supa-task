@@ -11,6 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -36,19 +37,29 @@ jobs:
 
       - name: Autoformat Dart files
         run: dart format .
-      
+
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze Dart code
         run: flutter analyze --fatal-warnings
 
-      # - name: Run tests
-      #   run: flutter test
+      # 🔐 NEW: Decode keystore for release signing
+      - name: Decode release keystore
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/release-key.jks
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
 
-      - name: Build Android artifact
+      # 🏗️ Build signed release APK
+      - name: Build Android release artifact
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: flutter build apk --release --build-name=1.0.0 --build-number=1
-        
+
+      # 📦 Upload build output
       - name: Upload Android artifact
         uses: actions/upload-artifact@v5
         with:
